@@ -35,38 +35,4 @@ public class WaitUtils {
             return false;
         }
     }
-
-    /**
-     * Ожидает кликабельности элемента.
-     *
-     * @param driver Веб-драйвер
-     * @param element Элемент для проверки
-     * @return {@code true}, если элемент кликабелен, иначе {@code false}.
-     */
-    public static boolean waitForElementToBeClickable(WebDriver driver, WebElement element) {
-        try {
-            new WebDriverWait(driver, DEFAULT_TIMEOUT)
-                    .until(ExpectedConditions.elementToBeClickable(element));
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    /**
-     * Ожидает исчезновения элемента со страницы.
-     *
-     * @param driver Веб-драйвер
-     * @param locator Локатор элемента
-     * @return {@code true}, если элемент исчез, иначе {@code false}.
-     */
-    public static boolean waitForElementToDisappear(WebDriver driver, By locator) {
-        try {
-            new WebDriverWait(driver, DEFAULT_TIMEOUT)
-                    .until(ExpectedConditions.invisibilityOfElementLocated(locator));
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
 }

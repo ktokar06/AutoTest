@@ -31,6 +31,12 @@ public class LoginPage extends HomePage {
     @FindBy(css = ".allLatestDropdown__value--QwA8E.allLatestDropdown__active--qisno")
     protected WebElement allLaunchesDropdown;
 
+    @FindBy(css = "a[href='#default_personal/dashboard']")
+    protected WebElement buttonDashboard;
+
+    @FindBy(css = "a[href='#default_personal/filters']")
+    protected WebElement buttonFilters;
+
     /**
      * Конструктор класса LoginPage.
      *

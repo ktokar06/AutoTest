@@ -17,8 +17,10 @@ public class LoginTest extends BaseTest {
     @Story("Позитивный сценарий стандартной авторизации")
     public void testSuccessfulStandardLogin() {
         LoginPage loginPage = new LoginPage(getDriver());
-        loginPage.standardLogin(VALID_USERNAME, VALID_PASSWORD)
-            .gitLogin(VALID_USERNAME_GIT, VALID_PASSWORD_GIT);
+
+        loginPage
+                .standardLogin(VALID_USERNAME, VALID_PASSWORD)
+                .gitLogin(VALID_USERNAME_GIT, VALID_PASSWORD_GIT);
 
         Assert.assertTrue(loginPage.isLoginSuccessful(),
                 "Проверка, что стандартный вход выполнен успешно");

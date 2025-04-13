@@ -29,9 +29,9 @@ public class BaseTest {
      */
     @BeforeMethod
     public void setUp() {
-        driver = new FirefoxDriver();
+        driver = new FirefoxDriver(); // если нужен Google замените FirefoxDriver() -> ChromeDriver
         driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         driver.get(URL_PORTAL_DEMO);
     }
 
