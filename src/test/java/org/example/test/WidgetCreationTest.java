@@ -46,4 +46,35 @@ public class WidgetCreationTest extends BaseTest {
                 "Виджет не отображается на странице"
         );
     }
+
+    @Test(description = "Попытка создания виджета без обязательных параметров")
+    @Description("Негативный тест: проверка создания виджета без указания имени запуска")
+    @Severity(SeverityLevel.CRITICAL)
+    @Story("Негативные сценарии создания виджета")
+    public void testCreateWidgetWithoutRequiredFields() {
+        LoginPage loginPage = new LoginPage(getDriver());
+        loginPage
+                .standardLogin(VALID_USERNAME, VALID_PASSWORD)
+                .gitLogin(VALID_USERNAME_GIT, VALID_PASSWORD_GIT);
+
+        DashboardPage dashboardPage = new DashboardPage(getDriver());
+        dashboardPage
+                .clickDashboardButton()
+                .createNewDashboard("Negative Test Dashboard", "For widget creation negative tests");
+
+        WidgetPage widgetPage = new WidgetPage(getDriver());
+        widgetPage
+                .clickFiltersButton()
+                .clickDashboardButton()
+                .clickDashboardName()
+                .clickAddNewWidget()
+                .selectPassingRateWidget()
+                .clickNextButton()
+                .clickNextButton();
+
+        Assert.assertFalse(
+                widgetPage.isWidgetDisplayed(),
+                "Виджет не должен отображаться при незаполненных обязательных полях"
+        );
+    }
 }
