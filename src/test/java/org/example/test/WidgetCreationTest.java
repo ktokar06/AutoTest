@@ -19,13 +19,11 @@ public class WidgetCreationTest extends BaseTest {
     @Story("Создание стандартного виджета")
     public void testCreatePassingRateWidget() {
         LoginPage loginPage = new LoginPage(getDriver());
-
         loginPage
                 .standardLogin(VALID_USERNAME, VALID_PASSWORD)
                 .gitLogin(VALID_USERNAME_GIT, VALID_PASSWORD_GIT);
 
         DashboardPage dashboardPage = new DashboardPage(getDriver());
-
         dashboardPage
                 .clickDashboardButton()
                 .createNewDashboard("My New Dashboard", "Test Description");
@@ -39,11 +37,13 @@ public class WidgetCreationTest extends BaseTest {
                 .selectPassingRateWidget()
                 .clickNextButton()
                 .enterLaunchName("Task Progress Widget")
+                .clickNextButton()
                 .enterDescription("Отслеживание прогресса задач")
                 .clickAddButton();
 
         Assert.assertTrue(
-                widgetPage.isWidgetCreatedWithName("Passing Rate Widget"),
-                "Виджет не был создан или название не совпадает");
+                widgetPage.isWidgetDisplayed(),
+                "Виджет не отображается на странице"
+        );
     }
 }

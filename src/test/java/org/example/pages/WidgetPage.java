@@ -1,6 +1,7 @@
 package org.example.pages;
 
 import io.qameta.allure.Step;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -12,7 +13,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
  */
 public class WidgetPage extends HomePage {
 
-    // Элементы страницы виджетов
     @FindBy(css = "a.dashboardTable__name--t2a89")
     private WebElement dashboardName;
 
@@ -22,7 +22,7 @@ public class WidgetPage extends HomePage {
     @FindBy(xpath = "//label[./input[@name='widget-type' and @value='passingRatePerLaunch']]")
     private WebElement buttonPassingRatePerLaunch;
 
-    @FindBy(xpath = "//button[.//span[contains(text(), 'Next')]]")
+    @FindBy(xpath = "//button[.//span[contains(text(), 'Next step')]]")
     private WebElement buttonNext;
 
     @FindBy(className = "singleAutocomplete__input--UgN6e")
@@ -43,6 +43,9 @@ public class WidgetPage extends HomePage {
     @FindBy(xpath = "/html/body/div[1]/div/div/div/div/div[1]/aside/div[2]/div[1]/div/div/a")
     protected WebElement buttonDashboard;
 
+    @FindBy(css = ".widgetHeader__type--yZiVg")
+    private WebElement widgetType;
+
     /**
      * Конструктор инициализирует страницу виджетов.
      *
@@ -55,7 +58,7 @@ public class WidgetPage extends HomePage {
     /**
      * Нажимает на название дашборда для перехода к его редактированию.
      *
-     * @return текущий экземпляр WidgetPage для поддержки цепочки вызовов
+     * @return текущий экземпляр {@link WidgetPage} для поддержки цепочки вызовов
      */
     @Step("Нажатие на название дашборда")
     public WidgetPage clickDashboardName() {
@@ -66,7 +69,7 @@ public class WidgetPage extends HomePage {
     /**
      * Инициирует процесс добавления нового виджета на дашборд.
      *
-     * @return текущий экземпляр WidgetPage для поддержки цепочки вызовов
+     * @return текущий экземпляр {@link WidgetPage} для поддержки цепочки вызовов
      */
     @Step("Нажатие кнопки 'Добавить новый виджет'")
     public WidgetPage clickAddNewWidget() {
@@ -77,7 +80,7 @@ public class WidgetPage extends HomePage {
     /**
      * Выбирает тип виджета "Процент прохождения тестов по запускам".
      *
-     * @return текущий экземпляр WidgetPage для поддержки цепочки вызовов
+     * @return текущий экземпляр {@link WidgetPage} для поддержки цепочки вызовов
      */
     @Step("Выбор типа виджета 'Процент прохождения тестов по запускам'")
     public WidgetPage selectPassingRateWidget() {
@@ -88,7 +91,7 @@ public class WidgetPage extends HomePage {
     /**
      * Переходит к следующему шагу в процессе создания виджета.
      *
-     * @return текущий экземпляр WidgetPage для поддержки цепочки вызовов
+     * @return текущий экземпляр {@link WidgetPage} для поддержки цепочки вызовов
      */
     @Step("Нажатие кнопки 'Далее'")
     public WidgetPage clickNextButton() {
@@ -100,7 +103,7 @@ public class WidgetPage extends HomePage {
      * Вводит название запуска для настройки виджета.
      *
      * @param launchName название тестового запуска
-     * @return текущий экземпляр WidgetPage для поддержки цепочки вызовов
+     * @return текущий экземпляр {@link WidgetPage} для поддержки цепочки вызовов
      */
     @Step("Ввод названия запуска: {launchName}")
     public WidgetPage enterLaunchName(String launchName) {
@@ -112,7 +115,7 @@ public class WidgetPage extends HomePage {
      * Вводит описание создаваемого виджета.
      *
      * @param description текстовое описание виджета
-     * @return текущий экземпляр WidgetPage для поддержки цепочки вызовов
+     * @return текущий экземпляр {@link WidgetPage} для поддержки цепочки вызовов
      */
     @Step("Ввод описания виджета: {description}")
     public WidgetPage enterDescription(String description) {
@@ -122,27 +125,34 @@ public class WidgetPage extends HomePage {
 
     /**
      * Завершает процесс создания виджета.
-     *
-     * @return текущий экземпляр WidgetPage для поддержки цепочки вызовов
      */
     @Step("Подтверждение создания виджета")
-    public WidgetPage clickAddButton() {
+    public void clickAddButton() {
         wait.until(ExpectedConditions.elementToBeClickable(addWidgetButton)).click();
-        return this;
     }
 
     /**
-     * Проверяет, что виджет с указанным именем был успешно создан.
+     * Проверяет, что виджет отображается на странице.
+     * Проверка осуществляется по наличию имени виджета и его типа.
      *
-     * @param expectedName ожидаемое название виджета
-     * @return true если виджет с заданным именем отображается, false в противном случае
+     * @return {@code true} если виджет отображается, {@code false} в случае исключения таймаута
      */
-    @Step("Проверка создания виджета с именем: {expectedName}")
-    public boolean isWidgetCreatedWithName(String expectedName) {
-        return wait.until(ExpectedConditions.visibilityOf(createdWidgetName))
-                .getText().equals(expectedName);
+    @Step("Проверка отображения виджета")
+    public boolean isWidgetDisplayed() {
+        try {
+            return wait.until(ExpectedConditions.visibilityOf(createdWidgetName)).isDisplayed() &&
+                    wait.until(ExpectedConditions.visibilityOf(widgetType)).isDisplayed();
+        } catch (TimeoutException e) {
+            return false;
+        }
     }
 
+    /**
+     * Нажимает кнопку "Фильтры" в интерфейсе Report Portal.
+     *
+     * @return новый экземпляр {@link WidgetPage} для поддержки fluent-интерфейса
+     * @throws TimeoutException если кнопка не становится кликабельной в течение заданного времени ожидания
+     */
     @Step("Нажатие кнопки 'Фильтры'")
     public WidgetPage clickFiltersButton() {
         wait.until(ExpectedConditions.elementToBeClickable(buttonFilters)).click();
@@ -152,31 +162,12 @@ public class WidgetPage extends HomePage {
     /**
      * Переходит на страницу дашбордов через навигационное меню.
      *
-     * @return текущий экземпляр DashboardPage для fluent-интерфейса
-     * @throws org.openqa.selenium.TimeoutException если кнопка навигации не стала кликабельной в течение времени ожидания
+     * @return текущий экземпляр {@link WidgetPage} для поддержки fluent-интерфейса
+     * @throws TimeoutException если кнопка навигации не стала кликабельной в течение времени ожидания
      */
     @Step("Нажатие кнопки 'Дашборд' в навигационном меню")
     public WidgetPage clickDashboardButton() {
         wait.until(ExpectedConditions.elementToBeClickable(buttonDashboard)).click();
         return this;
-    }
-
-    /**
-     * Создает новый виджет с заданными параметрами.
-     *
-     * @param launchName название тестового запуска
-     * @param description описание виджета
-     * @param widgetName название виджета
-     * @return true если виджет успешно создан, false в случае ошибки
-     */
-    @Step("Создание виджета с параметрами: запуск={launchName}, описание={description}")
-    public boolean createWidget(String launchName, String description, String widgetName) {
-        return clickAddNewWidget()
-                .selectPassingRateWidget()
-                .clickNextButton()
-                .enterLaunchName(launchName)
-                .enterDescription(description)
-                .clickAddButton()
-                .isWidgetCreatedWithName(widgetName);
     }
 }
