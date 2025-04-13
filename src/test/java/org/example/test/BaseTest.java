@@ -22,6 +22,7 @@ public class BaseTest {
      * Экземпляр WebDriver, используемый в тестах.
      */
     private WebDriver driver;
+    protected String createdDashboardId;
 
     /**
      * Метод, выполняемый перед каждым тестом.
@@ -29,10 +30,10 @@ public class BaseTest {
      */
     @BeforeMethod
     public void setUp() {
-        driver = new FirefoxDriver(); // если нужен Google замените FirefoxDriver() -> ChromeDriver
+/*        driver = new FirefoxDriver(); // если нужен Google замените FirefoxDriver() -> ChromeDriver
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        driver.get(URL_PORTAL_DEMO);
+        driver.get(URL_PORTAL_DEMO);*/
     }
 
     /**
