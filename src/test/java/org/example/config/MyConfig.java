@@ -33,19 +33,23 @@ public class MyConfig {
     public static final String TEST_DASHBOARD_NAME = "Test Dashboard";
 
     /**
-     * Report Portal URL.
+     * URL-адрес Report Portal.
      */
     public static final String URL_PORTAL_DEMO_API = "https://demo.reportportal.io/api";
 
     /**
-     * API endpoints
+     * Название проекта.
      */
-    public static final String DASHBOARDS_ENDPOINT = "/v1/dashboards";
+    public static final String PROJECT_NAME = "default";
 
     /**
-     * API authentication token
+     * Конечные точки API.
+     * Эндпоинт для работы с дашбордами формируется с учётом имени проекта.
      */
-    public static final String API_TOKEN = "test_ld0OIcfRR2OHbD5F7hobadawscpxbqHgBMtkmAOEG5sRVFdBB024C2jtxEuxQ-4k";
+    public static final String DASHBOARDS_ENDPOINT = "/v1/" + PROJECT_NAME + "/dashboard";
 
-
+    /**
+     * Токен аутентификации для доступа к API.
+     */
+    public static final String API_TOKEN = "test_qNWMYjq3Q72oz5on9ZMAcp25d4vvDZuCXQ35HChHgVMvVv-gjvSHIk_p1O7Ea2wH";
 }

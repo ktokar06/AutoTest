@@ -42,21 +42,13 @@ public class DashboardService {
     public static Response getAllDashboards(String token) {
         return given()
                 .spec(Specifications.authRequestSpec(URL_PORTAL_DEMO_API, token))
+                .queryParam("page", 0)
+                .queryParam("size", 100)
                 .when()
                 .get(DASHBOARDS_ENDPOINT)
                 .then()
                 .log().all()
                 .extract()
                 .response();
-    }
-
-    public static String generateApiToken(WebDriver driver) {
-        driver.get(URL_PORTAL_DEMO + "ui/#default_personal/api-tokens");
-        WebElement generateBtn = driver.findElement(By.cssSelector(".generateTokenButton__generate-button--K4WY8"));
-        generateBtn.click();
-
-        WebElement tokenElement = new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".tokenItem__token-value--vqkXQ")));
-        return tokenElement.getText();
     }
 }

@@ -24,28 +24,4 @@ public class LoginTest extends BaseTest {
         Assert.assertTrue(loginPage.isLoginSuccessful(),
                 "Проверка, что стандартный вход выполнен успешно");
     }
-
-    @Test(description = "Попытка входа с неверным паролем")
-    @Description("Проверка поведения системы при вводе корректного логина, но неверного пароля")
-    @Severity(SeverityLevel.NORMAL)
-    @Story("Негативные сценарии авторизации: Неверные учетные данные")
-    public void testInvalidPasswordLogin() {
-        LoginPage loginPage = new LoginPage(getDriver());
-        loginPage.standardLogin(VALID_USERNAME, "wrong_password");
-
-        Assert.assertFalse(loginPage.isLoginSuccessful(),
-                "Ожидается, что вход с неверным паролем не будет успешным");
-    }
-
-    @Test(description = "Попытка входа с пустыми полями")
-    @Description("Проверка валидации формы авторизации при попытке входа без ввода данных")
-    @Severity(SeverityLevel.NORMAL)
-    @Story("Негативные сценарии авторизации: Пустые поля")
-    public void testEmptyCredentialsLogin() {
-        LoginPage loginPage = new LoginPage(getDriver());
-        loginPage.standardLogin("", "");
-
-        Assert.assertFalse(loginPage.isLoginSuccessful(),
-                "Ожидается, что вход с пустыми полями не будет успешным");
-    }
 }

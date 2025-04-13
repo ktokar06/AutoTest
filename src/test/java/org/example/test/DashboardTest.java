@@ -3,6 +3,7 @@ package org.example.test;
 import io.restassured.response.Response;
 import org.testng.annotations.Test;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,12 +40,12 @@ public class DashboardTest extends BaseTest {
         assertThat(response.jsonPath().getString("name"), equalTo(TEST_DASHBOARD_NAME));
     }
 
-    @Test(description = "Проверка наличия созданного dashboard в общем списке")
+    @Test(description = "Получение информации о несуществующем dashboard")
     public void testDashboardExistsInList() {
         Response response = getAllDashboards(API_TOKEN);
 
         assertEquals(response.statusCode(), 200, "Статус код должен быть 200 (OK)");
-        assertThat(response.jsonPath().getList("name"), hasItem(TEST_DASHBOARD_NAME));
+        assertThat(response.jsonPath().getList("content.name"), hasItem(TEST_DASHBOARD_NAME));
     }
 
     @Test(description = "Попытка создания dashboard без обязательного поля 'name'")
@@ -87,7 +88,7 @@ public class DashboardTest extends BaseTest {
 
     @Test(description = "Попытка создания dashboard с слишком длинным именем")
     public void testCreateDashboardWithLongName() {
-        String longName = new String(new char[256]).replace('\0', 'a');
+        String longName = String.join("", Collections.nCopies(256, "a"));
         Map<String, Object> invalidData = new HashMap<>();
         invalidData.put("name", longName);
         invalidData.put("description", "Dashboard with too long name");
