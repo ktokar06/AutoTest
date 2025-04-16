@@ -20,12 +20,12 @@ public class MyConfig {
     /**
      * Валидный пароль пользователя.
      */
-    public static final String VALID_PASSWORD_GIT = "5O?.;379CUl$~+–";
+    public static final String VALID_PASSWORD_GIT = "-------";
 
     /**
      * Валидный логин пользователя.
      */
-    public static final String VALID_USERNAME_GIT = "itokar4@mail.ru";
+    public static final String VALID_USERNAME_GIT = "----";
 
     /**
      * Тестовое название дашборда с временной меткой для обеспечения уникальности
