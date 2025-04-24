@@ -49,114 +49,108 @@ public class WidgetPage extends HomePage {
     private WebElement widgetType;
 
     /**
-     * Конструктор класса WidgetPage
-     * @param driver WebDriver экземпляр драйвера
+     * Конструктор класса WidgetPage.
+     *
+     * @param driver экземпляр WebDriver для взаимодействия с браузером
      */
     public WidgetPage(WebDriver driver) {
         super(driver);
     }
 
     /**
-     * Переход в раздел дашбордов
-     * @return текущий экземпляр WidgetPage
+     * Нажимает кнопку перехода в раздел дашбордов.
+     *
+     * @return текущий экземпляр WidgetPage для цепочки вызовов
      */
     @Step("Переход в раздел дашбордов")
     public WidgetPage clickDashboardButton() {
-        if (WaitUtils.waitForElementPresence(driver, By.xpath("/html/body/div[1]/div/div/div/div/div[1]/aside/div[2]/div[1]/div/div/a"))) {
-            buttonDashboard.click();
-        }
+        buttonDashboard.click();
         return this;
     }
 
     /**
-     * Выбор дашборда по имени
-     * @param dashboardName название дашборда для выбора
-     * @return текущий экземпляр WidgetPage
+     * Выбирает дашборд по указанному имени.
+     *
+     * @param dashboardName имя дашборда для выбора
+     * @return текущий экземпляр WidgetPage для цепочки вызовов
      */
     @Step("Выбор дашборда '{dashboardName}'")
     public WidgetPage selectDashboardByName(String dashboardName) {
         String xpath = String.format("//a[contains(@class, 'dashboardTable__name') and contains(text(), '%s')]", dashboardName);
-        if (WaitUtils.waitForElementPresence(driver, By.xpath(xpath))) {
-            driver.findElement(By.xpath(xpath)).click();
-        }
+        driver.findElement(By.xpath(xpath)).click();
         return this;
     }
 
     /**
-     * Начало процесса создания нового виджета
-     * @return текущий экземпляр WidgetPage
+     * Начинает процесс создания нового виджета, нажимая соответствующую кнопку.
+     *
+     * @return текущий экземпляр WidgetPage для цепочки вызовов
      */
     @Step("Начало создания нового виджета")
     public WidgetPage clickAddNewWidget() {
-        if (WaitUtils.waitForElementPresence(driver, By.cssSelector(".dashboardItemPage__buttons-block--QoL50 button.ghostButton__ghost-button--r7c9T"))) {
-            buttonAddNewWidget.click();
-        }
+        buttonAddNewWidget.click();
         return this;
     }
 
     /**
-     * Выбор типа виджета 'Passing Rate Per Launch'
-     * @return текущий экземпляр WidgetPage
+     * Выбирает тип виджета 'Passing Rate Per Launch'.
+     *
+     * @return текущий экземпляр WidgetPage для цепочки вызовов
      */
     @Step("Выбор типа виджета 'Passing Rate Per Launch'")
     public WidgetPage selectPassingRateWidget() {
-        if (WaitUtils.waitForElementPresence(driver, By.xpath("//label[./input[@name='widget-type' and @value='passingRatePerLaunch']]"))) {
-            buttonPassingRatePerLaunch.click();
-        }
+        buttonPassingRatePerLaunch.click();
         return this;
     }
 
     /**
-     * Переход к следующему шагу мастера создания виджета
-     * @return текущий экземпляр WidgetPage
+     * Переходит к следующему шагу в процессе создания виджета.
+     *
+     * @return текущий экземпляр WidgetPage для цепочки вызовов
      */
     @Step("Переход к следующему шагу создания виджета")
     public WidgetPage clickNextButton() {
-        if (WaitUtils.waitForElementPresence(driver, By.xpath("//button[.//span[contains(text(), 'Next step')]]"))) {
-            buttonNext.click();
-        }
+        buttonNext.click();
         return this;
     }
 
     /**
-     * Ввод названия запуска для виджета
+     * Вводит название запуска для виджета.
+     *
      * @param launchName название запуска
-     * @return текущий экземпляр WidgetPage
+     * @return текущий экземпляр WidgetPage для цепочки вызовов
      */
     @Step("Ввод названия запуска: {launchName}")
     public WidgetPage enterLaunchName(String launchName) {
-        if (WaitUtils.waitForElementPresence(driver, By.className("singleAutocomplete__input--UgN6e"))) {
-            launchNameField.sendKeys(launchName);
-        }
+        launchNameField.sendKeys(launchName);
         return this;
     }
 
     /**
-     * Ввод описания виджета
-     * @param description текст описания
-     * @return текущий экземпляр WidgetPage
+     * Вводит описание для создаваемого виджета.
+     *
+     * @param description текст описания виджета
+     * @return текущий экземпляр WidgetPage для цепочки вызовов
      */
     @Step("Ввод описания виджета: {description}")
     public WidgetPage enterDescription(String description) {
-        if (WaitUtils.waitForElementPresence(driver, By.className("inputTextArea__input-text-area--N0goa"))) {
-            descriptionField.sendKeys(description);
-        }
+        descriptionField.sendKeys(description);
         return this;
     }
 
     /**
-     * Завершение процесса создания виджета
+     * Завершает процесс создания виджета, нажимая кнопку добавления.
      */
     @Step("Завершение создания виджета")
     public void clickAddButton() {
-        if (WaitUtils.waitForElementPresence(driver, By.cssSelector("button.bigButton__big-button--BmG4Q"))) {
-            addWidgetButton.click();
-        }
+        addWidgetButton.click();
     }
 
     /**
-     * Проверка отображения созданного виджета
-     * @return true если виджет отображается, false в противном случае
+     * Проверяет, отображается ли созданный виджет на странице.
+     * Использует WaitUtils для ожидания появления элементов.
+     *
+     * @return true если виджет и его тип отображаются, false в противном случае
      */
     @Step("Проверка отображения созданного виджета")
     public boolean isWidgetDisplayed() {
