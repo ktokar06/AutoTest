@@ -1,7 +1,6 @@
 package org.example.config;
 
 public class MyConfig {
-
     /**
      * Report Portal URL.
      */
@@ -10,12 +9,12 @@ public class MyConfig {
     /**
      * Валидный логин пользователя.
      */
-    public static final String VALID_USERNAME = "default";
+    public static final String VALID_USERNAME = "---";
 
     /**
      * Валидный пароль пользователя.
      */
-    public static final String VALID_PASSWORD = "1q2w3e";
+    public static final String VALID_PASSWORD = "---";
 
     /**
      * URL-адрес Report Portal.
@@ -31,5 +30,5 @@ public class MyConfig {
     /**
      * Токен аутентификации для доступа к API.
      */
-    public static final String API_TOKEN = "123_eLZSRfmhQuKBLjGoA0hmNZCDWrsNDPMjEKMFR5gA33GTh2pigLPYTBuL_PbfbW_u";
+    public static final String API_TOKEN = "---";
 }

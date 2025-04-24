@@ -15,10 +15,10 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
  */
 public class LoginPage extends HomePage {
 
-    @FindBy(css = "input[name='login']")
+    @FindBy(name = "login")
     private WebElement usernameField;
 
-    @FindBy(css = "input[name='password']")
+    @FindBy(name = "password")
     private WebElement passwordField;
 
     @FindBy(css = "form.loginForm__login-form--UYW8B button[type='submit']")
