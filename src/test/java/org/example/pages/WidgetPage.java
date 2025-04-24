@@ -1,11 +1,13 @@
 package org.example.pages;
 
 import io.qameta.allure.Step;
+import org.example.utils.WaitUtils;
+import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
+
 
 /**
  * Класс страницы управления виджетами в Report Portal.
@@ -47,127 +49,122 @@ public class WidgetPage extends HomePage {
     private WebElement widgetType;
 
     /**
-     * Конструктор инициализирует страницу виджетов.
-     *
-     * @param driver экземпляр WebDriver для взаимодействия с браузером
+     * Конструктор класса WidgetPage
+     * @param driver WebDriver экземпляр драйвера
      */
     public WidgetPage(WebDriver driver) {
         super(driver);
     }
 
     /**
-     * Нажимает на название дашборда для перехода к его редактированию.
-     *
-     * @return текущий экземпляр {@link WidgetPage} для поддержки цепочки вызовов
+     * Переход в раздел дашбордов
+     * @return текущий экземпляр WidgetPage
      */
-    @Step("Нажатие на название дашборда")
-    public WidgetPage clickDashboardName() {
-        wait.until(ExpectedConditions.elementToBeClickable(dashboardName)).click();
+    @Step("Переход в раздел дашбордов")
+    public WidgetPage clickDashboardButton() {
+        if (WaitUtils.waitForElementPresence(driver, By.xpath("/html/body/div[1]/div/div/div/div/div[1]/aside/div[2]/div[1]/div/div/a"))) {
+            buttonDashboard.click();
+        }
         return this;
     }
 
     /**
-     * Инициирует процесс добавления нового виджета на дашборд.
-     *
-     * @return текущий экземпляр {@link WidgetPage} для поддержки цепочки вызовов
+     * Выбор дашборда по имени
+     * @param dashboardName название дашборда для выбора
+     * @return текущий экземпляр WidgetPage
      */
-    @Step("Нажатие кнопки 'Добавить новый виджет'")
+    @Step("Выбор дашборда '{dashboardName}'")
+    public WidgetPage selectDashboardByName(String dashboardName) {
+        String xpath = String.format("//a[contains(@class, 'dashboardTable__name') and contains(text(), '%s')]", dashboardName);
+        if (WaitUtils.waitForElementPresence(driver, By.xpath(xpath))) {
+            driver.findElement(By.xpath(xpath)).click();
+        }
+        return this;
+    }
+
+    /**
+     * Начало процесса создания нового виджета
+     * @return текущий экземпляр WidgetPage
+     */
+    @Step("Начало создания нового виджета")
     public WidgetPage clickAddNewWidget() {
-        wait.until(ExpectedConditions.elementToBeClickable(buttonAddNewWidget)).click();
+        if (WaitUtils.waitForElementPresence(driver, By.cssSelector(".dashboardItemPage__buttons-block--QoL50 button.ghostButton__ghost-button--r7c9T"))) {
+            buttonAddNewWidget.click();
+        }
         return this;
     }
 
     /**
-     * Выбирает тип виджета "Процент прохождения тестов по запускам".
-     *
-     * @return текущий экземпляр {@link WidgetPage} для поддержки цепочки вызовов
+     * Выбор типа виджета 'Passing Rate Per Launch'
+     * @return текущий экземпляр WidgetPage
      */
-    @Step("Выбор типа виджета 'Процент прохождения тестов по запускам'")
+    @Step("Выбор типа виджета 'Passing Rate Per Launch'")
     public WidgetPage selectPassingRateWidget() {
-        wait.until(ExpectedConditions.elementToBeClickable(buttonPassingRatePerLaunch)).click();
+        if (WaitUtils.waitForElementPresence(driver, By.xpath("//label[./input[@name='widget-type' and @value='passingRatePerLaunch']]"))) {
+            buttonPassingRatePerLaunch.click();
+        }
         return this;
     }
 
     /**
-     * Переходит к следующему шагу в процессе создания виджета.
-     *
-     * @return текущий экземпляр {@link WidgetPage} для поддержки цепочки вызовов
+     * Переход к следующему шагу мастера создания виджета
+     * @return текущий экземпляр WidgetPage
      */
-    @Step("Нажатие кнопки 'Далее'")
+    @Step("Переход к следующему шагу создания виджета")
     public WidgetPage clickNextButton() {
-        wait.until(ExpectedConditions.elementToBeClickable(buttonNext)).click();
+        if (WaitUtils.waitForElementPresence(driver, By.xpath("//button[.//span[contains(text(), 'Next step')]]"))) {
+            buttonNext.click();
+        }
         return this;
     }
 
     /**
-     * Вводит название запуска для настройки виджета.
-     *
-     * @param launchName название тестового запуска
-     * @return текущий экземпляр {@link WidgetPage} для поддержки цепочки вызовов
+     * Ввод названия запуска для виджета
+     * @param launchName название запуска
+     * @return текущий экземпляр WidgetPage
      */
     @Step("Ввод названия запуска: {launchName}")
     public WidgetPage enterLaunchName(String launchName) {
-        wait.until(ExpectedConditions.elementToBeClickable(launchNameField)).sendKeys(launchName);
+        if (WaitUtils.waitForElementPresence(driver, By.className("singleAutocomplete__input--UgN6e"))) {
+            launchNameField.sendKeys(launchName);
+        }
         return this;
     }
 
     /**
-     * Вводит описание создаваемого виджета.
-     *
-     * @param description текстовое описание виджета
-     * @return текущий экземпляр {@link WidgetPage} для поддержки цепочки вызовов
+     * Ввод описания виджета
+     * @param description текст описания
+     * @return текущий экземпляр WidgetPage
      */
     @Step("Ввод описания виджета: {description}")
     public WidgetPage enterDescription(String description) {
-        wait.until(ExpectedConditions.elementToBeClickable(descriptionField)).sendKeys(description);
+        if (WaitUtils.waitForElementPresence(driver, By.className("inputTextArea__input-text-area--N0goa"))) {
+            descriptionField.sendKeys(description);
+        }
         return this;
     }
 
     /**
-     * Завершает процесс создания виджета.
+     * Завершение процесса создания виджета
      */
-    @Step("Подтверждение создания виджета")
+    @Step("Завершение создания виджета")
     public void clickAddButton() {
-        wait.until(ExpectedConditions.elementToBeClickable(addWidgetButton)).click();
-    }
-
-    /**
-     * Проверяет, что виджет отображается на странице.
-     * Проверка осуществляется по наличию имени виджета и его типа.
-     *
-     * @return {@code true} если виджет отображается, {@code false} в случае исключения таймаута
-     */
-    @Step("Проверка отображения виджета")
-    public boolean isWidgetDisplayed() {
-        try {
-            return wait.until(ExpectedConditions.visibilityOf(createdWidgetName)).isDisplayed() &&
-                    wait.until(ExpectedConditions.visibilityOf(widgetType)).isDisplayed();
-        } catch (TimeoutException e) {
-            return false;
+        if (WaitUtils.waitForElementPresence(driver, By.cssSelector("button.bigButton__big-button--BmG4Q"))) {
+            addWidgetButton.click();
         }
     }
 
     /**
-     * Нажимает кнопку "Фильтры" в интерфейсе Report Portal.
-     *
-     * @return новый экземпляр {@link WidgetPage} для поддержки fluent-интерфейса
-     * @throws TimeoutException если кнопка не становится кликабельной в течение заданного времени ожидания
+     * Проверка отображения созданного виджета
+     * @return true если виджет отображается, false в противном случае
      */
-    @Step("Нажатие кнопки 'Фильтры'")
-    public WidgetPage clickFiltersButton() {
-        wait.until(ExpectedConditions.elementToBeClickable(buttonFilters)).click();
-        return new WidgetPage(driver);
-    }
-
-    /**
-     * Переходит на страницу дашбордов через навигационное меню.
-     *
-     * @return текущий экземпляр {@link WidgetPage} для поддержки fluent-интерфейса
-     * @throws TimeoutException если кнопка навигации не стала кликабельной в течение времени ожидания
-     */
-    @Step("Нажатие кнопки 'Дашборд' в навигационном меню")
-    public WidgetPage clickDashboardButton() {
-        wait.until(ExpectedConditions.elementToBeClickable(buttonDashboard)).click();
-        return this;
+    @Step("Проверка отображения созданного виджета")
+    public boolean isWidgetDisplayed() {
+        try {
+            return WaitUtils.waitForElementPresence(driver, By.cssSelector(".widgetHeader__widget-name-block--AOAHS")) &&
+                    WaitUtils.waitForElementPresence(driver, By.cssSelector(".widgetHeader__type--yZiVg"));
+        } catch (TimeoutException e) {
+            return false;
+        }
     }
 }

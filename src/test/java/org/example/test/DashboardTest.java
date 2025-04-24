@@ -13,7 +13,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.testng.Assert.assertEquals;
 
-public class DashboardTest extends BaseTest {
+
+public class DashboardTest{
+
+    private String createdDashboardId;
+    private static final String TEST_DASHBOARD_NAME = "Test Dashboard";
 
     @Test(description = "Создание нового dashboard с валидными данными")
     public void testCreateDashboard() {

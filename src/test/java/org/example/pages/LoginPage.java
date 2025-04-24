@@ -8,50 +8,34 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+
 /**
  * Класс страницы авторизации в Report Portal.
- * Предоставляет функционал для взаимодействия с элементами страницы входа
- * и выполнения операций авторизации различными способами.
+ * Предоставляет методы для выполнения входа в систему и проверки успешности авторизации.
  */
 public class LoginPage extends HomePage {
 
-    // Элементы страницы виджетов
-    @FindBy(name = "login")
+    @FindBy(css = "input[name='login']")
     private WebElement usernameField;
 
-    @FindBy(name = "password")
+    @FindBy(css = "input[name='password']")
     private WebElement passwordField;
 
-    @FindBy(css = "button.bigButton__big-button--BmG4Q")
-    private WebElement standardLoginButton;
-
-    @FindBy(css = "input.js-sign-in-button[value='Sign in']")
-    private WebElement gitLoginButton;
-
-    @FindBy(css = ".allLatestDropdown__value--QwA8E.allLatestDropdown__active--qisno")
-    protected WebElement allLaunchesDropdown;
-
-    @FindBy(css = "a[href='#default_personal/dashboard']")
-    protected WebElement buttonDashboard;
-
-    @FindBy(css = "a[href='#default_personal/filters']")
-    protected WebElement buttonFilters;
+    @FindBy(css = "form.loginForm__login-form--UYW8B button[type='submit']")
+    private WebElement loginButton;
 
     /**
-     * Конструктор класса LoginPage.
-     *
-     * @param driver экземпляр WebDriver для взаимодействия с браузером
+     * Конструктор класса WidgetPage
+     * @param driver WebDriver экземпляр драйвера
      */
     public LoginPage(WebDriver driver) {
         super(driver);
     }
 
     /**
-     * Вводит указанное имя пользователя в соответствующее поле ввода.
-     * Перед вводом очищает поле от предыдущих значений.
-     *
+     * Вводит имя пользователя в поле ввода
      * @param username имя пользователя для авторизации
-     * @return текущий экземпляр LoginPage для поддержки fluent-интерфейса
+     * @return текущий экземпляр {@link LoginPage}
      */
     @Step("Ввод имени пользователя: {username}")
     public LoginPage enterUsername(String username) {
@@ -62,11 +46,9 @@ public class LoginPage extends HomePage {
     }
 
     /**
-     * Вводит указанный пароль в соответствующее поле ввода.
-     * Перед вводом очищает поле от предыдущих значений.
-     *
+     * Вводит пароль в поле ввода
      * @param password пароль для авторизации
-     * @return текущий экземпляр LoginPage для поддержки fluent-интерфейса
+     * @return текущий экземпляр {@link LoginPage}
      */
     @Step("Ввод пароля")
     public LoginPage enterPassword(String password) {
@@ -77,66 +59,32 @@ public class LoginPage extends HomePage {
     }
 
     /**
-     * Нажимает кнопку стандартного входа в систему.
-     * Ожидает, пока кнопка станет кликабельной перед выполнением действия.
-     *
-     * @return текущий экземпляр LoginPage для поддержки fluent-интерфейса
+     * Нажимает кнопку входа в систему
+     * @return текущий экземпляр {@link LoginPage}
      */
-    @Step("Нажатие кнопки 'Войти' (стандартный вход)")
-    public LoginPage clickStandardLogin() {
-        WaitUtils.waitForElementPresence(driver, By.cssSelector("button.bigButton__big-button--BmG4Q"));
-        wait.until(ExpectedConditions.elementToBeClickable(standardLoginButton)).click();
+    @Step("Нажатие кнопки 'Login'")
+    public LoginPage clickLoginButton() {
+        wait.until(ExpectedConditions.elementToBeClickable(loginButton)).click();
         return this;
     }
 
     /**
-     * Нажимает кнопку входа через Git.
-     * Ожидает, пока кнопка станет кликабельной перед выполнением действия.
-     *
-     * @return текущий экземпляр LoginPage для поддержки fluent-интерфейса
-     */
-    @Step("Нажатие кнопки 'Sign in' (Git вход)")
-    public LoginPage clickGitLogin() {
-        WaitUtils.waitForElementPresence(driver, By.cssSelector("input.js-sign-in-button[value='Sign in']"));
-        wait.until(ExpectedConditions.elementToBeClickable(gitLoginButton)).click();
-        return this;
-    }
-
-    /**
-     * Выполняет полный процесс стандартной авторизации в системе.
-     * Последовательно вводит имя пользователя и пароль, затем подтверждает вход.
-     *
-     * @param username имя пользователя для авторизации
+     * Выполняет полный процесс авторизации
+     * @param username имя пользователя
      * @param password пароль пользователя
-     * @return текущий экземпляр LoginPage для поддержки fluent-интерфейса
+     * @return текущий экземпляр {@link LoginPage}
      */
-    @Step("Стандартная авторизация пользователя {username}")
-    public LoginPage standardLogin(String username, String password) {
-        return enterUsername(username)
+    @Step("Выполнение авторизации пользователя {username}")
+    public LoginPage performLogin(String username, String password) {
+        enterUsername(username)
                 .enterPassword(password)
-                .clickStandardLogin();
+                .clickLoginButton();
+        return this;
     }
 
     /**
-     * Выполняет полный процесс авторизации через Git.
-     * Последовательно вводит имя пользователя и пароль, затем подтверждает вход.
-     *
-     * @param username имя пользователя для авторизации через Git
-     * @param password пароль пользователя для авторизации через Git
-     * @return текущий экземпляр LoginPage для поддержки fluent-интерфейса
-     */
-    @Step("Авторизация через Git пользователя {username}")
-    public LoginPage gitLogin(String username, String password) {
-        return enterUsername(username)
-                .enterPassword(password)
-                .clickGitLogin();
-    }
-
-    /**
-     * Проверяет успешность выполнения авторизации.
-     * Определяет по наличию элемента, отображаемого после успешного входа.
-     *
-     * @return true если авторизация прошла успешно, false в случае ошибки
+     * Проверяет успешность авторизации
+     * @return true если авторизация успешна, иначе false
      */
     @Step("Проверка успешности авторизации")
     public boolean isLoginSuccessful() {

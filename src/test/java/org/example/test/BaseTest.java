@@ -12,9 +12,9 @@ import java.time.Duration;
 
 import static org.example.config.MyConfig.URL_PORTAL_DEMO;
 
+
 /**
  * Базовый класс для всех тестов, содержащий общие настройки и методы.
- * Обеспечивает инициализацию WebDriver и управление жизненным циклом браузера.
  */
 public class BaseTest {
 
@@ -22,7 +22,6 @@ public class BaseTest {
      * Экземпляр WebDriver, используемый в тестах.
      */
     private WebDriver driver;
-    protected String createdDashboardId;
 
     /**
      * Метод, выполняемый перед каждым тестом.
@@ -32,7 +31,7 @@ public class BaseTest {
     public void setUp() {
         driver = new FirefoxDriver();
         driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         driver.get(URL_PORTAL_DEMO);
     }
 
