@@ -6,9 +6,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
+
 /**
  * Базовый класс для домашней страницы, содержащий общие элементы интерфейса.
- * Предоставляет основные методы навигации и проверки состояния элементов.
  */
 public class HomePage {
 

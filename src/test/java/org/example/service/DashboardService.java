@@ -2,17 +2,12 @@ package org.example.service;
 
 import io.restassured.response.Response;
 import org.example.specification.Specifications;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
 import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 import static org.example.config.MyConfig.*;
+
 
 public class DashboardService {
 

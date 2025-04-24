@@ -6,6 +6,7 @@ import io.restassured.config.SSLConfig;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 
+
 public class Specifications {
 
     public static RequestSpecification authRequestSpec(String baseUrl, String token) {

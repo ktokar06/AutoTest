@@ -7,6 +7,7 @@ import org.testng.annotations.Test;
 
 import static org.example.config.MyConfig.*;
 
+
 @Epic("Авторизация")
 @Feature("Функционал входа в систему")
 public class LoginTest extends BaseTest {
@@ -15,13 +16,13 @@ public class LoginTest extends BaseTest {
     @Description("Проверка стандартного входа в систему с корректными логином и паролем")
     @Severity(SeverityLevel.CRITICAL)
     @Story("Позитивный сценарий стандартной авторизации")
-    public void testSuccessfulStandardLogin() {
+    public void testSuccessfulLogin() {
         LoginPage loginPage = new LoginPage(getDriver());
-        loginPage
-                .standardLogin(VALID_USERNAME, VALID_PASSWORD)
-                .gitLogin(VALID_USERNAME_GIT, VALID_PASSWORD_GIT);
+
+        loginPage.performLogin(VALID_USERNAME, VALID_PASSWORD);
 
         Assert.assertTrue(loginPage.isLoginSuccessful(),
-                "Проверка, что стандартный вход выполнен успешно");
+                "После ввода валидных учетных данных должен быть выполнен успешный вход");
+
     }
 }
