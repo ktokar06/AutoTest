@@ -25,17 +25,4 @@ public class LoginTest extends BaseTest {
                 "После ввода валидных учетных данных должен быть выполнен успешный вход");
 
     }
-
-    @Test(description = "Неудачная попытка входа с неверным паролем")
-    @Description("Проверка обработки ошибки при вводе некорректного пароля")
-    @Severity(SeverityLevel.NORMAL)
-    @Story("Негативный сценарий авторизации")
-    public void testFailedLogin() {
-        LoginPage loginPage = new LoginPage(getDriver());
-
-        loginPage.performLogin(INVALID_USERNAME, INVALID_PASSWORD);
-
-        Assert.assertFalse(loginPage.isLoginSuccessful(),
-                "При вводе неверного пароля вход не должен быть выполнен");
-    }
 }

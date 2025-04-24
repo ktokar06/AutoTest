@@ -15,9 +15,6 @@ import org.openqa.selenium.support.FindBy;
  */
 public class WidgetPage extends HomePage {
 
-    @FindBy(css = "a.dashboardTable__name--t2a89")
-    private WebElement dashboardName;
-
     @FindBy(css = ".dashboardItemPage__buttons-block--QoL50 button.ghostButton__ghost-button--r7c9T")
     private WebElement buttonAddNewWidget;
 
@@ -38,9 +35,6 @@ public class WidgetPage extends HomePage {
 
     @FindBy(css = ".widgetHeader__widget-name-block--AOAHS")
     private WebElement createdWidgetName;
-
-    @FindBy(xpath = "/html/body/div[1]/div/div/div/div/div[1]/aside/div[2]/div[3]/div/div/a")
-    protected WebElement buttonFilters;
 
     @FindBy(xpath = "/html/body/div[1]/div/div/div/div/div[1]/aside/div[2]/div[1]/div/div/a")
     protected WebElement buttonDashboard;

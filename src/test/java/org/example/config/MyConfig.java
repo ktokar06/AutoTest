@@ -18,16 +18,6 @@ public class MyConfig {
     public static final String VALID_PASSWORD = "1q2w3e";
 
     /**
-     * Невалидный логин пользователя.
-     */
-    public static final String INVALID_USERNAME = "user";
-
-    /**
-     * Невалидный пароль пользователя.
-     */
-    public static final String INVALID_PASSWORD = "pass24word";
-
-    /**
      * URL-адрес Report Portal.
      */
     public static final String URL_PORTAL_DEMO_API = "https://demo.reportportal.io/api";
