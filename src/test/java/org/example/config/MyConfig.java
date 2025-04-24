@@ -1,7 +1,6 @@
 package org.example.config;
 
 public class MyConfig {
-
     /**
      * Report Portal URL.
      */
