@@ -31,16 +31,4 @@ mvn allure:report
 mvn allure:serve
 ```
 
-## Закаментируй чтоб прошли тесты api
-
-```java
-    @BeforeMethod
-    public void setUp() {
-        driver = new FirefoxDriver();
-        driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
-        driver.get(URL_PORTAL_DEMO);
-    }
-```
-
 
