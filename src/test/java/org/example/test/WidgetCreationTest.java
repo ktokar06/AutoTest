@@ -21,7 +21,7 @@ public class WidgetCreationTest extends BaseTest {
     @Description("Позитивный тест создания виджета типа 'Passing Rate Per Launch' с валидными параметрами")
     @Severity(SeverityLevel.BLOCKER)
     @Story("Создание стандартного виджета")
-    public void testCreatePassingRateWidget() {
+     void testCreatePassingRateWidget() {
         LoginPage loginPage = new LoginPage(getDriver());
         loginPage.performLogin(VALID_USERNAME, VALID_PASSWORD);
 

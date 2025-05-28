@@ -19,7 +19,7 @@ public class DashboardTest{
     private static final String TEST_DASHBOARD_NAME = "My name is project" + System.currentTimeMillis();
 
     @Test(description = "Создание нового dashboard с валидными данными")
-    public void testCreateDashboard() {
+    void testCreateDashboard() {
         Map<String, Object> dashboardData = new HashMap<>();
         dashboardData.put("name", TEST_DASHBOARD_NAME);
         dashboardData.put("description", "Test description");
@@ -42,7 +42,7 @@ public class DashboardTest{
     }
 
     @Test(description = "Получение информации о созданном dashboard")
-    public void testGetDashboard() {
+    void testGetDashboard() {
         Response response = getDashboard(createdDashboardId, API_TOKEN);
 
         assertEquals(response.statusCode(), 200, "Статус код должен быть 200 (OK)");
@@ -51,7 +51,7 @@ public class DashboardTest{
     }
 
     @Test(description = "Получение информации о несуществующем dashboard")
-    public void testDashboardExistsInList() {
+    void testDashboardExistsInList() {
         Response response = getAllDashboards(API_TOKEN);
 
         assertEquals(response.statusCode(), 200, "Статус код должен быть 200 (OK)");
@@ -59,7 +59,7 @@ public class DashboardTest{
     }
 
     @Test(description = "Попытка создания dashboard без обязательного поля 'name'")
-    public void testCreateDashboardWithoutRequiredField() {
+    void testCreateDashboardWithoutRequiredField() {
         Map<String, Object> invalidData = new HashMap<>();
         invalidData.put("description", "Dashboard without name");
 
@@ -69,7 +69,7 @@ public class DashboardTest{
     }
 
     @Test(description = "Попытка создания dashboard с невалидным токеном авторизации")
-    public void testCreateDashboardWithInvalidAuth() {
+    void testCreateDashboardWithInvalidAuth() {
         Map<String, Object> dashboardData = new HashMap<>();
         dashboardData.put("name", "Unauthorized test dashboard");
 
@@ -79,7 +79,7 @@ public class DashboardTest{
     }
 
     @Test(description = "Проверка получения несуществующего dashboard")
-    public void testGetNonExistentDashboard() {
+    void testGetNonExistentDashboard() {
         String fakeId = "999999999";
 
         Response response = getDashboard(fakeId, API_TOKEN);
@@ -88,7 +88,7 @@ public class DashboardTest{
 
 
     @Test(description = "Попытка создания dashboard с пустым именем")
-    public void testCreateDashboardWithEmptyName() {
+    void testCreateDashboardWithEmptyName() {
         Map<String, Object> invalidData = new HashMap<>();
         invalidData.put("name", "");
         invalidData.put("description", "Dashboard with empty name");
@@ -99,7 +99,7 @@ public class DashboardTest{
     }
 
     @Test(description = "Попытка создания dashboard с слишком длинным именем")
-    public void testCreateDashboardWithLongName() {
+    void testCreateDashboardWithLongName() {
         String longName = String.join("", Collections.nCopies(256, "a"));
         Map<String, Object> invalidData = new HashMap<>();
         invalidData.put("name", longName);

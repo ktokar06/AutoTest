@@ -15,7 +15,7 @@ public class LoginTest extends BaseTest {
     @Description("Проверка стандартного входа в систему с корректными логином и паролем")
     @Severity(SeverityLevel.CRITICAL)
     @Story("Позитивный сценарий стандартной авторизации")
-    public void testSuccessfulLogin() {
+    void testSuccessfulLogin() {
         LoginPage loginPage = new LoginPage(getDriver());
 
         loginPage.performLogin(VALID_USERNAME, VALID_PASSWORD);
