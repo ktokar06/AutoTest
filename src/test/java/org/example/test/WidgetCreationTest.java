@@ -13,6 +13,10 @@ import static org.example.config.MyConfig.*;
 @Feature("Создание виджетов")
 public class WidgetCreationTest extends BaseTest {
 
+    private static final String DASHBOARD_NAME = "DEMO DASHBOARD";
+    private static final String LAUNCH_NAME = "Task Progress Widget";
+    private static final String WIDGET_DESCRIPTION = "Отслеживание прогресса задач";
+
     @Test(description = "Проверка создания виджета 'Процент прохождения тестов'")
     @Description("Позитивный тест создания виджета типа 'Passing Rate Per Launch' с валидными параметрами")
     @Severity(SeverityLevel.BLOCKER)
@@ -23,14 +27,14 @@ public class WidgetCreationTest extends BaseTest {
 
         WidgetPage widgetPage = new WidgetPage(getDriver());
         widgetPage.clickDashboardButton()
-                .selectDashboardByName("DEMO DASHBOARD")
-                .clickAddNewWidget()
-                .selectPassingRateWidget()
-                .clickNextButton()
-                .enterLaunchName("Task Progress Widget")
-                .clickNextButton()
-                .enterDescription("Отслеживание прогресса задач")
-                .clickAddButton();
+                  .selectDashboardByName(DASHBOARD_NAME)
+                  .clickAddNewWidget()
+                  .selectPassingRateWidget()
+                  .clickNextButton()
+                  .enterLaunchName(LAUNCH_NAME)
+                  .clickNextButton()
+                  .enterDescription(WIDGET_DESCRIPTION)
+                  .clickAddButton();
 
         Assert.assertTrue(
                 widgetPage.isWidgetDisplayed(),

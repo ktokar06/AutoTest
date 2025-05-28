@@ -7,7 +7,6 @@ import org.testng.annotations.Test;
 
 import static org.example.config.MyConfig.*;
 
-
 @Epic("Авторизация")
 @Feature("Функционал входа в систему")
 public class LoginTest extends BaseTest {
@@ -23,6 +22,5 @@ public class LoginTest extends BaseTest {
 
         Assert.assertTrue(loginPage.isLoginSuccessful(),
                 "После ввода валидных учетных данных должен быть выполнен успешный вход");
-
     }
 }

@@ -12,15 +12,11 @@ import java.time.Duration;
 
 import static org.example.config.MyConfig.URL_PORTAL_DEMO;
 
-
 /**
  * Базовый класс для всех тестов, содержащий общие настройки и методы.
  */
 public class BaseTest {
 
-    /**
-     * Экземпляр WebDriver, используемый в тестах.
-     */
     private WebDriver driver;
 
     /**
@@ -37,23 +33,21 @@ public class BaseTest {
 
     /**
      * Метод, выполняемый после каждого теста.
-     * Делает скриншот, закрывает браузер и освобождает ресурсы WebDriver.
+     * Делает скриншот, добавляет его в Allure-отчет и закрывает браузер.
      */
     @AfterMethod
     public void tearDown() {
-        try {
-            if (driver != null) {
+        if (driver != null) {
+            try {
                 Allure.getLifecycle().addAttachment(
                         "Скриншот",
                         "image/png",
                         "png",
                         ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES)
                 );
-            }
-        } catch (Exception e) {
-            System.err.println("Не удалось сделать скриншот: " + e.getMessage());
-        } finally {
-            if (driver != null) {
+            } catch (Exception e) {
+                System.err.println("Не удалось сделать скриншот: " + e.getMessage());
+            } finally {
                 driver.quit();
             }
         }
@@ -61,6 +55,7 @@ public class BaseTest {
 
     /**
      * Получает текущий экземпляр WebDriver.
+     *
      * @return Активный экземпляр WebDriver
      */
     public WebDriver getDriver() {

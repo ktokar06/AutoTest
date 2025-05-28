@@ -8,16 +8,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.example.config.MyConfig.*;
-import static org.example.service.DashboardService.*;
+import static org.example.api.ApiDashboard.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.testng.Assert.assertEquals;
 
-
 public class DashboardTest{
 
     private String createdDashboardId;
-    private static final String TEST_DASHBOARD_NAME = "Test Dashboard";
+    private static final String TEST_DASHBOARD_NAME = "My name is project" + System.currentTimeMillis();
 
     @Test(description = "Создание нового dashboard с валидными данными")
     public void testCreateDashboard() {
@@ -26,13 +25,20 @@ public class DashboardTest{
         dashboardData.put("description", "Test description");
         dashboardData.put("share", true);
 
-        Response response = createDashboard(dashboardData, API_TOKEN);
+        Response createResponse = createDashboard(dashboardData, API_TOKEN);
+        System.out.println("Create Response: " + createResponse.getBody().asString());
 
-        assertEquals(response.statusCode(), 201, "Статус код должен быть 201 (Created)");
-        assertThat(response.jsonPath().getString("name"), equalTo(TEST_DASHBOARD_NAME));
-        assertThat(response.jsonPath().getString("id"), not(emptyOrNullString()));
+        assertEquals(createResponse.statusCode(), 201);
+        String id = createResponse.jsonPath().getString("id");
+        assertThat(id, not(emptyOrNullString()));
 
-        createdDashboardId = response.jsonPath().getString("id");
+        Response getResponse = getDashboard(id, API_TOKEN);
+        System.out.println("Get Response: " + getResponse.getBody().asString());
+
+        assertEquals(getResponse.statusCode(), 200);
+        assertThat(getResponse.jsonPath().getString("name"), equalTo(TEST_DASHBOARD_NAME));
+
+        createdDashboardId = id;
     }
 
     @Test(description = "Получение информации о созданном dashboard")
@@ -72,12 +78,14 @@ public class DashboardTest{
         assertEquals(response.statusCode(), 401, "Статус код должен быть 401 (Unauthorized)");
     }
 
-    @Test(description = "Попытка получения информации о несуществующем dashboard")
+    @Test(description = "Проверка получения несуществующего dashboard")
     public void testGetNonExistentDashboard() {
-        Response response = getDashboard("non-existent-id", API_TOKEN);
+        String fakeId = "999999999";
 
+        Response response = getDashboard(fakeId, API_TOKEN);
         assertEquals(response.statusCode(), 404, "Статус код должен быть 404 (Not Found)");
     }
+
 
     @Test(description = "Попытка создания dashboard с пустым именем")
     public void testCreateDashboardWithEmptyName() {

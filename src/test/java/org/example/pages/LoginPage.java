@@ -2,16 +2,13 @@ package org.example.pages;
 
 import io.qameta.allure.Step;
 import org.example.utils.WaitUtils;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-
 
 /**
- * Класс страницы авторизации в Report Portal.
- * Предоставляет методы для выполнения входа в систему и проверки успешности авторизации.
+ * Страница авторизации в Report Portal.
+ * Предоставляет методы для ввода учетных данных, выполнения входа и проверки успешности авторизации.
  */
 public class LoginPage extends HomePage {
 
@@ -24,55 +21,63 @@ public class LoginPage extends HomePage {
     @FindBy(css = "form.loginForm__login-form--UYW8B button[type='submit']")
     private WebElement loginButton;
 
+    @FindBy(css = ".allLatestDropdown__value--QwA8E.allLatestDropdown__active--qisno")
+    private WebElement loginSuccessElement;
+
     /**
-     * Конструктор класса WidgetPage
-     * @param driver WebDriver экземпляр драйвера
+     * Конструктор страницы авторизации.
+     *
+     * @param driver WebDriver для взаимодействия с браузером
      */
     public LoginPage(WebDriver driver) {
         super(driver);
     }
 
     /**
-     * Вводит имя пользователя в поле ввода
+     * Вводит имя пользователя в поле "Логин".
+     *
      * @param username имя пользователя для авторизации
-     * @return текущий экземпляр {@link LoginPage}
+     * @return текущий экземпляр {@link LoginPage} для цепочки вызовов
      */
     @Step("Ввод имени пользователя: {username}")
     public LoginPage enterUsername(String username) {
-        WaitUtils.waitForElementPresence(driver, By.name("login"));
+        WaitUtils.waitForElementPresence(getDriver(), usernameField);
         usernameField.clear();
         usernameField.sendKeys(username);
         return this;
     }
 
     /**
-     * Вводит пароль в поле ввода
-     * @param password пароль для авторизации
-     * @return текущий экземпляр {@link LoginPage}
+     * Вводит пароль в поле "Пароль".
+     *
+     * @param password пароль пользователя
+     * @return текущий экземпляр {@link LoginPage} для цепочки вызовов
      */
     @Step("Ввод пароля")
     public LoginPage enterPassword(String password) {
-        WaitUtils.waitForElementPresence(driver, By.name("password"));
+        WaitUtils.waitForElementPresence(getDriver(), passwordField);
         passwordField.clear();
         passwordField.sendKeys(password);
         return this;
     }
 
     /**
-     * Нажимает кнопку входа в систему
-     * @return текущий экземпляр {@link LoginPage}
+     * Нажимает кнопку "Login" для выполнения входа.
+     *
+     * @return текущий экземпляр {@link LoginPage} для цепочки вызовов
      */
     @Step("Нажатие кнопки 'Login'")
     public LoginPage clickLoginButton() {
-        wait.until(ExpectedConditions.elementToBeClickable(loginButton)).click();
+        loginButton.click();
         return this;
     }
 
     /**
-     * Выполняет полный процесс авторизации
+     * Выполняет полный процесс авторизации с заданными учетными данными.
+     *
      * @param username имя пользователя
-     * @param password пароль пользователя
-     * @return текущий экземпляр {@link LoginPage}
+     * @param password пароль
+     * @return текущий экземпляр {@link LoginPage} для цепочки вызовов
      */
     @Step("Выполнение авторизации пользователя {username}")
     public LoginPage performLogin(String username, String password) {
@@ -83,12 +88,12 @@ public class LoginPage extends HomePage {
     }
 
     /**
-     * Проверяет успешность авторизации
-     * @return true если авторизация успешна, иначе false
+     * Проверяет успешность авторизации, ожидая появления определенного элемента.
+     *
+     * @return {@code true}, если элемент, подтверждающий вход, присутствует; {@code false} иначе
      */
     @Step("Проверка успешности авторизации")
     public boolean isLoginSuccessful() {
-        return WaitUtils.waitForElementPresence(driver,
-                By.cssSelector(".allLatestDropdown__value--QwA8E.allLatestDropdown__active--qisno"));
+        return WaitUtils.waitForElementPresence(getDriver(), loginSuccessElement);
     }
 }
