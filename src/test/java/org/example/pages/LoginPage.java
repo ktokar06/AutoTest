@@ -18,7 +18,7 @@ public class LoginPage extends HomePage {
     @FindBy(name = "password")
     private WebElement passwordField;
 
-    @FindBy(css = "form.loginForm__login-form--UYW8B button[type='submit']")
+    @FindBy(css = "form[class^='loginForm__login-form'] button[type='submit']")
     private WebElement loginButton;
 
     @FindBy(css = ".allLatestDropdown__value--QwA8E.allLatestDropdown__active--qisno")

@@ -16,10 +16,10 @@ public class WidgetPage extends HomePage {
     @FindBy(css = ".dashboardItemPage__buttons-block--QoL50 button.ghostButton__ghost-button--r7c9T")
     private WebElement buttonAddNewWidget;
 
-    @FindBy(css = "label > input[name='widget-type'][value='passingRatePerLaunch']")
+    @FindBy(xpath = "//label[.//input[@name='widget-type' and @value='passingRatePerLaunch']]")
     private WebElement buttonPassingRatePerLaunch;
 
-    @FindBy(css = "button span:contains('Next step')")
+    @FindBy(xpath = "//button[.//span[contains(text(), 'Next step')]]")
     private WebElement buttonNext;
 
     @FindBy(css = ".singleAutocomplete__input--UgN6e")
@@ -119,17 +119,6 @@ public class WidgetPage extends HomePage {
     public WidgetPage enterLaunchName(String launchName) {
         launchNameField.clear();
         launchNameField.sendKeys(launchName);
-        return this;
-    }
-
-    /**
-     * Выбирает первый вариант из автозаполнения списка названий запусков.
-     *
-     * @return текущий объект {@link WidgetPage} для поддержки цепочки вызовов
-     */
-    @Step("Выбор первого варианта из автокомплита")
-    public WidgetPage selectFirstLaunchNameAutocompleteOption() {
-        firstAutocompleteOption.click();
         return this;
     }
 

@@ -16,7 +16,7 @@ public class ApiDashboard {
     /**
      * Создает новый дашборд.
      *
-     * @param body  тело запроса (JSON)
+     * @param body тело запроса (JSON)
      * @param token Bearer-токен
      * @return ответ сервера
      */
@@ -35,7 +35,7 @@ public class ApiDashboard {
     /**
      * Получает дашборд по ID.
      *
-     * @param id    идентификатор дашборда
+     * @param id идентификатор дашборда
      * @param token Bearer-токен
      * @return ответ сервера
      */
