@@ -16,9 +16,9 @@ public class ApiDashboard {
     /**
      * Создает новый дашборд.
      *
-     * @param body тело запроса (JSON)
-     * @param token Bearer-токен
-     * @return ответ сервера
+     * @param body тело запроса (JSON), содержащее ключи: "name", "description", "share"
+     * @param token Bearer-токен авторизации
+     * @return ответ сервера в формате {@link Response}
      */
     public static Response createDashboard(Map<String, Object> body, String token) {
         return given()
@@ -33,11 +33,11 @@ public class ApiDashboard {
     }
 
     /**
-     * Получает дашборд по ID.
+     * Получает информацию о дашборде по его идентификатору.
      *
      * @param id идентификатор дашборда
-     * @param token Bearer-токен
-     * @return ответ сервера
+     * @param token Bearer-токен авторизации
+     * @return ответ сервера в формате {@link Response}
      */
     public static Response getDashboard(String id, String token) {
         return given()
@@ -51,10 +51,10 @@ public class ApiDashboard {
     }
 
     /**
-     * Получает все доступные дашборды.
+     * Получает список всех доступных дашбордов.
      *
-     * @param token Bearer-токен
-     * @return ответ сервера
+     * @param token Bearer-токен авторизации
+     * @return ответ сервера с пагинированным списком дашбордов в формате {@link Response}
      */
     public static Response getAllDashboards(String token) {
         return given()
@@ -63,6 +63,24 @@ public class ApiDashboard {
                 .queryParam("size", 100)
                 .when()
                 .get(DASHBOARDS_ENDPOINT)
+                .then()
+                .log().all()
+                .extract()
+                .response();
+    }
+
+    /**
+     * Удаляет дашборд по его идентификатору.
+     *
+     * @param id идентификатор дашборда, который необходимо удалить
+     * @param token Bearer-токен авторизации
+     * @return ответ сервера в формате {@link Response}, код 200 или 204 при успешном удалении
+     */
+    public static Response deleteDashboard(String id, String token) {
+        return given()
+                .spec(Specifications.authRequestSpec(URL_PORTAL_DEMO_API, token))
+                .when()
+                .delete(DASHBOARDS_ENDPOINT + "/" + id)
                 .then()
                 .log().all()
                 .extract()
