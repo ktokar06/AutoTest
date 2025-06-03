@@ -1,8 +1,6 @@
 package org.example.test;
 
 import io.qameta.allure.Allure;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -25,7 +23,7 @@ public class BaseTest {
      * Метод, выполняемый перед каждым тестом.
      * Инициализирует FirefoxDriver, максимизирует окно браузера и устанавливает неявные ожидания.
      */
-    @BeforeEach
+    @BeforeMethod
     public void setUp() {
         driver = new FirefoxDriver();
         driver.manage().window().maximize();
@@ -37,7 +35,7 @@ public class BaseTest {
      * Метод, выполняемый после каждого теста.
      * Делает скриншот, добавляет его в Allure-отчет и закрывает браузер.
      */
-    @AfterEach
+    @AfterMethod
     public void tearDown() {
         if (driver != null) {
             try {

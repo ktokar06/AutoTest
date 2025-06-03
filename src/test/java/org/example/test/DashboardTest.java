@@ -2,14 +2,15 @@ package org.example.test;
 
 import io.restassured.response.Response;
 import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.example.config.MyConfig.*;
 import static org.example.api.ApiDashboard.*;
-import static org.example.config.MyConfig.API_TOKEN;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.testng.Assert.assertEquals;
@@ -18,103 +19,110 @@ public class DashboardTest {
 
     private String createdDashboardId;
 
-    private String createDashboardAndReturnId(String name) {
-        Map<String, Object> data = new HashMap<>();
-        data.put("name", name);
-        data.put("description", "Auto created");
-        data.put("share", false);
+    @BeforeMethod
+    public void setUp() {
+        Map<String, Object> dashboardData = new HashMap<>();
+        String dashboardName = "TestDashboard_" + System.currentTimeMillis();
+        dashboardData.put("name", dashboardName);
+        dashboardData.put("description", "Test description");
+        dashboardData.put("share", true);
 
-        Response response = createDashboard(data, API_TOKEN);
-        assertEquals(response.statusCode(), 201, "Dashboard creation should return 201");
-
-        createdDashboardId = response.jsonPath().getString("id");
-        return createdDashboardId;
-    }
-
-    private void deleteDashboardIfExists() {
-        if (createdDashboardId != null) {
-            Response response = deleteDashboard(createdDashboardId, API_TOKEN);
-            assertThat("Dashboard deletion failed", response.statusCode(), is(oneOf(200, 204, 404)));
-            createdDashboardId = null;
-        }
+        Response createResponse = createDashboard(dashboardData, API_TOKEN);
+        assertEquals(createResponse.statusCode(), 201, "Не удалось создать дашборд перед тестом");
+        createdDashboardId = createResponse.jsonPath().getString("id");
     }
 
     @AfterMethod
-    void tearDown() {
-        deleteDashboardIfExists();
+    public void tearDown() {
+        if (createdDashboardId != null) {
+            Response deleteResponse = deleteDashboard(createdDashboardId, API_TOKEN);
+            assertThat("Не удалось удалить дашборд после теста",
+                    deleteResponse.statusCode(), is(oneOf(200, 204, 404)));
+        }
     }
 
     @Test(description = "Создание нового dashboard с валидными данными")
-    void testCreateDashboard() {
-        String name = "Dashboard_" + System.currentTimeMillis();
-        String id = createDashboardAndReturnId(name);
+    public void testCreateDashboard() {
+        Map<String, Object> dashboardData = new HashMap<>();
+        String dashboardName = "NewDashboard_" + System.currentTimeMillis();
+        dashboardData.put("name", dashboardName);
+        dashboardData.put("description", "Test description");
+        dashboardData.put("share", true);
 
-        assertThat(id, not(emptyOrNullString()));
+        Response response = createDashboard(dashboardData, API_TOKEN);
+
+        assertEquals(response.statusCode(), 201, "Неверный статус код при создании дашборда");
+        assertThat(response.jsonPath().getString("id"), not(emptyOrNullString()));
     }
 
     @Test(description = "Получение информации о созданном dashboard")
-    void testGetDashboard() {
-        String name = "Dashboard_" + System.currentTimeMillis();
-        String id = createDashboardAndReturnId(name);
+    public void testGetDashboard() {
+        Response response = getDashboard(createdDashboardId, API_TOKEN);
 
-        Response response = getDashboard(id, API_TOKEN);
-        assertEquals(response.statusCode(), 200);
-        assertThat(response.jsonPath().getString("name"), equalTo(name));
+        assertEquals(response.statusCode(), 200, "Неверный статус код при получении дашборда");
+        assertThat(response.jsonPath().getString("id"), equalTo(createdDashboardId));
+        assertThat(response.jsonPath().getString("name"), not(emptyOrNullString()));
     }
 
-    @Test(description = "Проверка наличия созданного dashboard в списке")
-    void testDashboardExistsInList() {
-        String name = "Dashboard_" + System.currentTimeMillis();
-        createDashboardAndReturnId(name);
+    @Test(description = "Проверка наличия dashboard в списке")
+    public void testDashboardExistsInList() {
+        Response getResponse = getDashboard(createdDashboardId, API_TOKEN);
+        String dashboardName = getResponse.jsonPath().getString("name");
 
-        Response response = getAllDashboards(API_TOKEN);
-        assertEquals(response.statusCode(), 200);
-        assertThat(response.jsonPath().getList("content.name"), hasItem(name));
+        Response listResponse = getAllDashboards(API_TOKEN);
+
+        assertEquals(listResponse.statusCode(), 200, "Неверный статус код при получении списка дашбордов");
+        assertThat(listResponse.jsonPath().getList("content.name"), hasItem(dashboardName));
     }
 
-    @Test(description = "Создание dashboard без обязательного поля 'name'")
-    void testCreateDashboardWithoutRequiredField() {
-        Map<String, Object> data = new HashMap<>();
-        data.put("description", "No name");
+    @Test(description = "Попытка создания dashboard без обязательного поля 'name'")
+    public void testCreateDashboardWithoutRequiredField() {
+        Map<String, Object> invalidData = new HashMap<>();
+        invalidData.put("description", "Dashboard without name");
 
-        Response response = createDashboard(data, API_TOKEN);
-        assertEquals(response.statusCode(), 400);
+        Response response = createDashboard(invalidData, API_TOKEN);
+
+        assertEquals(response.statusCode(), 400, "Неверный статус код при создании без имени");
     }
 
-    @Test(description = "Создание dashboard с невалидным токеном")
-    void testCreateDashboardWithInvalidAuth() {
-        Map<String, Object> data = new HashMap<>();
-        data.put("name", "Unauthorized");
+    @Test(description = "Попытка создания dashboard с невалидным токеном авторизации")
+    public void testCreateDashboardWithInvalidAuth() {
+        Map<String, Object> dashboardData = new HashMap<>();
+        dashboardData.put("name", "Unauthorized test dashboard");
 
-        Response response = createDashboard(data, "invalid_token");
-        assertEquals(response.statusCode(), 401);
+        Response response = createDashboard(dashboardData, "invalid_token");
+
+        assertEquals(response.statusCode(), 401, "Неверный статус код при невалидном токене");
     }
 
-    @Test(description = "Получение несуществующего dashboard")
-    void testGetNonExistentDashboard() {
-        Response response = getDashboard("999999999", API_TOKEN);
-        assertEquals(response.statusCode(), 404);
+    @Test(description = "Проверка получения несуществующего dashboard")
+    public void testGetNonExistentDashboard() {
+        String fakeId = "999999999";
+
+        Response response = getDashboard(fakeId, API_TOKEN);
+        assertEquals(response.statusCode(), 404, "Неверный статус код для несуществующего дашборда");
     }
 
-    @Test(description = "Создание dashboard с пустым именем")
-    void testCreateDashboardWithEmptyName() {
-        Map<String, Object> data = new HashMap<>();
-        data.put("name", "");
-        data.put("description", "Empty name");
+    @Test(description = "Попытка создания dashboard с пустым именем")
+    public void testCreateDashboardWithEmptyName() {
+        Map<String, Object> invalidData = new HashMap<>();
+        invalidData.put("name", "");
+        invalidData.put("description", "Dashboard with empty name");
 
-        Response response = createDashboard(data, API_TOKEN);
-        assertEquals(response.statusCode(), 400);
+        Response response = createDashboard(invalidData, API_TOKEN);
+
+        assertEquals(response.statusCode(), 400, "Неверный статус код при пустом имени");
     }
 
-    @Test(description = "Создание dashboard с слишком длинным именем")
-    void testCreateDashboardWithLongName() {
+    @Test(description = "Попытка создания dashboard с слишком длинным именем")
+    public void testCreateDashboardWithLongName() {
         String longName = String.join("", Collections.nCopies(256, "a"));
+        Map<String, Object> invalidData = new HashMap<>();
+        invalidData.put("name", longName);
+        invalidData.put("description", "Dashboard with too long name");
 
-        Map<String, Object> data = new HashMap<>();
-        data.put("name", longName);
-        data.put("description", "Too long");
+        Response response = createDashboard(invalidData, API_TOKEN);
 
-        Response response = createDashboard(data, API_TOKEN);
-        assertEquals(response.statusCode(), 400);
+        assertEquals(response.statusCode(), 400, "Неверный статус код при слишком длинном имени");
     }
 }

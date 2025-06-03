@@ -10,15 +10,16 @@ import static org.example.config.MyConfig.*;
 
 /**
  * Класс для работы с API дашбордов Report Portal.
+ * Предоставляет методы для создания, получения, удаления и списка дашбордов.
  */
 public class ApiDashboard {
 
     /**
      * Создает новый дашборд.
      *
-     * @param body тело запроса (JSON), содержащее ключи: "name", "description", "share"
-     * @param token Bearer-токен авторизации
-     * @return ответ сервера в формате {@link Response}
+     * @param body тело запроса в формате JSON
+     * @param token Bearer-токен для авторизации
+     * @return ответ от сервера
      */
     public static Response createDashboard(Map<String, Object> body, String token) {
         return given()
@@ -33,11 +34,11 @@ public class ApiDashboard {
     }
 
     /**
-     * Получает информацию о дашборде по его идентификатору.
+     * Получает дашборд по его ID.
      *
      * @param id идентификатор дашборда
-     * @param token Bearer-токен авторизации
-     * @return ответ сервера в формате {@link Response}
+     * @param token Bearer-токен для авторизации
+     * @return ответ от сервера
      */
     public static Response getDashboard(String id, String token) {
         return given()
@@ -53,8 +54,8 @@ public class ApiDashboard {
     /**
      * Получает список всех доступных дашбордов.
      *
-     * @param token Bearer-токен авторизации
-     * @return ответ сервера с пагинированным списком дашбордов в формате {@link Response}
+     * @param token Bearer-токен для авторизации
+     * @return ответ от сервера
      */
     public static Response getAllDashboards(String token) {
         return given()
@@ -70,11 +71,11 @@ public class ApiDashboard {
     }
 
     /**
-     * Удаляет дашборд по его идентификатору.
+     * Удаляет дашборд по ID.
      *
-     * @param id идентификатор дашборда, который необходимо удалить
-     * @param token Bearer-токен авторизации
-     * @return ответ сервера в формате {@link Response}, код 200 или 204 при успешном удалении
+     * @param id идентификатор дашборда
+     * @param token Bearer-токен для авторизации
+     * @return ответ от сервера
      */
     public static Response deleteDashboard(String id, String token) {
         return given()
